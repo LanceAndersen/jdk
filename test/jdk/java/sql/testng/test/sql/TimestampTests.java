@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2023, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2014, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -667,6 +667,21 @@ public class TimestampTests extends BaseTest {
         expectThrows(IllegalArgumentException.class, () -> Timestamp.from(Instant.MIN));
     }
 
+    @Test
+    public void test54() {
+        long t = 1000;
+        Timestamp ts1 = new Timestamp(t);
+        Timestamp ts2 = new Timestamp(t);
+        ts1.setNanos(123456789);
+        ts2.setNanos(987654321);
+
+        // Verify hashCodes are equal despite different nanos values
+        assertEquals(ts1.hashCode(), ts2.hashCode());
+        System.out.println("validating ts1 equals ts1");
+        assertTrue(ts1.equals(ts1));
+        System.out.println("validating ts1  not equals ts2");
+        assertFalse(ts1.equals(ts2));
+    }
     /*
      * DataProvider used to provide Timestamps which are not valid and are used
      * to validate that an IllegalArgumentException will be thrown from the
